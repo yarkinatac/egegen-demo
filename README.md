@@ -4,7 +4,9 @@ Laravel (backend) + Next.js (frontend) ile geliştirilmiş bir e-ticaret ürün 
 
 Backend tarafında admin panel üzerinden ürün, dinamik alan ve varyasyon yönetimi yapılabiliyor. Frontend tarafında ürünler API üzerinden çekilip listeleniyor ve detay sayfasında varyasyon seçimi yapılabiliyor.
 
-**Demo:** https://egegen-case.vercel.app
+**Frontend Demo:** https://egegen-demo.vercel.app
+**Admin Panel:** https://egegen-demo.onrender.com/admin/products
+**API:** https://egegen-demo.onrender.com/api/products
 
 ## Kurulum
 
