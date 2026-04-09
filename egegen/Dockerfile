@@ -27,7 +27,11 @@ RUN cp .env.example .env \
     && php artisan db:seed --force
 
 RUN chmod -R 775 storage bootstrap/cache
+RUN chmod -R 755 public
+
+ENV APP_ENV=production
+ENV APP_DEBUG=false
 
 EXPOSE 10000
 
-CMD php artisan serve --host=0.0.0.0 --port=${PORT:-10000}
+CMD sed -i "s|APP_URL=.*|APP_URL=https://egegen-demo.onrender.com|" .env && php artisan serve --host=0.0.0.0 --port=${PORT:-10000}
