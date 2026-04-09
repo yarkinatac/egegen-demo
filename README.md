@@ -4,7 +4,16 @@ Laravel (backend) + Next.js (frontend) ile geliştirilmiş bir e-ticaret ürün 
 
 Backend tarafında admin panel üzerinden ürün, dinamik alan ve varyasyon yönetimi yapılabiliyor. Frontend tarafında ürünler API üzerinden çekilip listeleniyor ve detay sayfasında varyasyon seçimi yapılabiliyor.
 
+**Demo:** https://egegen-case.vercel.app
+
 ## Kurulum
+
+### Gereksinimler
+
+- PHP 8.2+
+- Composer
+- Node.js 18+
+- npm
 
 ### Backend (Laravel)
 
@@ -14,57 +23,64 @@ composer install
 npm install
 cp .env.example .env
 php artisan key:generate
+touch database/database.sqlite
 php artisan migrate
 php artisan db:seed
-npm run dev   # Vite asset build
-php artisan serve
+npm run dev          # Vite asset build (ayri terminal)
+php artisan serve    # http://127.0.0.1:8000
 ```
+
+Admin panel: http://127.0.0.1:8000/admin/products
 
 ### Frontend (Next.js)
 
 ```bash
 cd egegen-frontend1
 npm install
-# .env.local dosyasında API_URL ayarlı olmalı
-npm run dev
+cp .env.example .env.local
+npm run dev          # http://localhost:3000
 ```
 
-## Soru Yanıtları
+> `.env.local` dosyasindaki `NEXT_PUBLIC_API_URL` degiskeni Laravel API adresini gostermelidir. Varsayilan olarak `http://127.0.0.1:8000/api` seklindedir.
 
-**1. Hangi rendering yöntemini tercih ettiniz ve neden?**
+**Not:** Backend ve frontend ayri terminallerde ayni anda calistirilmalidir.
 
-Next.js App Router ile Server Component yapısını kullandım. Ürün detay sayfasının SEO için sunucu tarafında render olması gerekiyordu, `generateMetadata` ile dinamik meta tag'ler oluşturdum. Kullanıcının etkileşime girdiği kısımları (varyasyon seçimi, miktar, sepete ekleme) ise Client Component olarak ayırdım. Böylece sayfa ilk yüklendiğinde HTML hazır geliyor ama interaktif kısımlar da çalışıyor.
+## Soru Yanitlari
 
-**2. Bu veri yapısını nasıl kurguladınız?**
+**1. Hangi rendering yontemini tercih ettiniz ve neden?**
 
-Ürünlerin sabit alanları (isim, fiyat, açıklama vs.) `products` tablosunda tutuluyor. Dinamik alanlar için `product_fields` tablosunda alan tanımları, `product_field_values` tablosunda da her ürüne ait değerler saklanıyor. Bu sayede veritabanı şemasını değiştirmeden yeni özellikler eklenebiliyor.
+Next.js App Router ile Server Component yapisini kullandim. Urun detay sayfasinin SEO icin sunucu tarafinda render olmasi gerekiyordu, `generateMetadata` ile dinamik meta tag'ler olusturdum. Kullanicinin etkilesime girdigi kisimlar (varyasyon secimi, miktar, sepete ekleme) ise Client Component olarak ayirdim. Boylece sayfa ilk yuklendiginde HTML hazir geliyor ama interaktif kisimlar da calisiyor.
 
-Varyasyonlar için `variation_attributes` tablosunda tip tanımları (mesela "Öğütme Tipi", "Paket Boyutu"), `variation_attribute_values` tablosunda da bu tiplerin alabileceği değerler tutuluyor. Her `product_variation` kaydı kendi fiyat ve stok bilgisine sahip, hangi attribute değerlerine sahip olduğu da pivot tablo ile ilişkilendiriliyor.
+**2. Bu veri yapisini nasil kurgulardiniz?**
 
-**3. Admin panel ve frontend arasında veri akışını nasıl yönettiniz?**
+Urunlerin sabit alanlari (isim, fiyat, aciklama vs.) `products` tablosunda tutuluyor. Dinamik alanlar icin `product_fields` tablosunda alan tanimlari, `product_field_values` tablosunda da her urune ait degerler saklaniyor. Bu sayede veritabani semasini degistirmeden yeni ozellikler eklenebiliyor.
 
-Laravel tarafında hem Blade ile admin panel hem de JSON dönen API endpoint'leri var. Frontend, `.env.local` dosyasındaki `NEXT_PUBLIC_API_URL` değişkeni üzerinden Laravel API'ye fetch ile istek atıyor. Admin panelde yapılan değişiklikler API'den anında frontend'e yansıyor.
+Varyasyonlar icin `variation_attributes` tablosunda tip tanimlari (mesela "Ogutme Tipi", "Paket Boyutu"), `variation_attribute_values` tablosunda da bu tiplerin alabilecegi degerler tutuluyor. Her `product_variation` kaydi kendi fiyat ve stok bilgisine sahip, hangi attribute degerlerine sahip oldugu da pivot tablo ile iliskilendiriliyor.
 
-**4. API performansı düşük olursa nasıl bir çözüm düşünürsünüz?**
+**3. Admin panel ve frontend arasinda veri akisini nasil yonettiniz?**
 
-Öncelikle Eager Loading'i kontrol ederim, N+1 sorgu problemleri varsa `with()` ile çözerim. Sonra sık erişilen endpoint'lere Redis veya Laravel'in cache mekanizmasıyla önbellek koyarım. Frontend tarafında da Next.js'in `revalidate` parametresiyle belirli aralıklarla cache'den okuma yapılabilir. Eğer ürün sayısı çok artarsa API'ye pagination eklerim.
+Laravel tarafinda hem Blade ile admin panel hem de JSON donen API endpoint'leri var. Frontend, `.env.local` dosyasindaki `NEXT_PUBLIC_API_URL` degiskeni uzerinden Laravel API'ye fetch ile istek atiyor. Admin panelde yapilan degisiklikler API'den aninda frontend'e yansiyor.
 
-**5. Projeyi production ortamına alırken neleri değiştirirsiniz?**
+**4. API performansi dusuk olursa nasil bir cozum dusunursunuz?**
 
-- SQLite yerine MySQL veya PostgreSQL kullanırım
-- `.env` dosyasında `APP_DEBUG=false` yaparım
+Oncelikle Eager Loading'i kontrol ederim, N+1 sorgu problemleri varsa `with()` ile cozerim. Sonra sik erisilen endpoint'lere Redis veya Laravel'in cache mekanizmasiyla onbellek koyarim. Frontend tarafinda da Next.js'in `revalidate` parametresiyle belirli araliklarla cache'den okuma yapilabilir. Eger urun sayisi cok artarsa API'ye pagination eklerim.
+
+**5. Projeyi production ortamina alirken neleri degistirirsiniz?**
+
+- SQLite yerine MySQL veya PostgreSQL kullanirim
+- `.env` dosyasinda `APP_DEBUG=false` yaparim
 - HTTPS zorunlu hale getiririm
-- Ürün resimlerini S3 veya CDN'e taşırım
-- Next.js Image component'inin domain ayarlarını yaparım
-- `npm run build` ile production build alırım
+- Urun resimlerini S3 veya CDN'e tasirim
+- Next.js Image component'inin domain ayarlarini yaparim
+- `npm run build` ile production build alirim
 
-**6. Güvenlik açısından hangi önlemleri alırsınız?**
+**6. Guvenlik acisindan hangi onlemleri alirsiniz?**
 
-- Admin panel rotalarına authentication middleware eklerim (Laravel Breeze veya Sanctum ile)
-- API isteklerinde rate limiting uygularım
-- CORS ayarlarını sadece frontend domain'ine açarım
-- Tüm form girdilerini Laravel validation'dan geçiririm
-- CSRF token kontrolü zaten Blade formlarında aktif
+- Admin panel rotalarina authentication middleware eklerim (Laravel Breeze veya Sanctum ile)
+- API isteklerinde rate limiting uygularim
+- CORS ayarlarini sadece frontend domain'ine acarim
+- Tum form girdilerini Laravel validation'dan geciririm
+- CSRF token kontrolu zaten Blade formlarinda aktif
 
 ---
 
