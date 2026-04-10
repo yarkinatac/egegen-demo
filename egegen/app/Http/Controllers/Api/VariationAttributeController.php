@@ -16,6 +16,12 @@ class VariationAttributeController extends Controller
         return response()->json($attributes);
     }
 
+    public function show($id)
+    {
+        $attribute = VariationAttribute::with('values')->findOrFail($id);
+        return response()->json($attribute);
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate([

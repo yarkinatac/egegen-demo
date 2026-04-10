@@ -15,6 +15,12 @@ class ProductFieldController extends Controller
         return response()->json($fields);
     }
 
+    public function show($id)
+    {
+        $field = ProductField::findOrFail($id);
+        return response()->json($field);
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate([
