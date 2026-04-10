@@ -100,5 +100,55 @@ class ProductSeeder extends Seeder
                 'variation_attribute_value_id' => $v['size']->id
             ]);
         }
+
+        // 2. urun
+        $product2 = Product::create([
+            'name' => 'Colombia Supremo',
+            'slug' => 'colombia-supremo',
+            'description' => 'Karamel ve findik aromali, yumusak govdeli bir Latin Amerika kahvesi.',
+            'price' => 210.00,
+            'origin' => 'Kolombiya',
+            'roast_level' => 'Medium',
+            'images' => ['https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=800&q=80'],
+            'is_active' => true
+        ]);
+
+        ProductFieldValue::create([
+            'product_id' => $product2->id,
+            'product_field_id' => $aromaField->id,
+            'value' => 'Karamel, Findik, Cikolata'
+        ]);
+
+        ProductFieldValue::create([
+            'product_id' => $product2->id,
+            'product_field_id' => $processField->id,
+            'value' => 'Natural'
+        ]);
+
+        $variations2 = [
+            ['sku' => 'COL-ESP-250', 'price' => 210.00, 'stock' => 35, 'grind' => $espresso, 'size' => $size250],
+            ['sku' => 'COL-FRP-250', 'price' => 210.00, 'stock' => 20, 'grind' => $frenchPress, 'size' => $size250],
+            ['sku' => 'COL-WHL-250', 'price' => 205.00, 'stock' => 45, 'grind' => $wholeBean, 'size' => $size250],
+            ['sku' => 'COL-ESP-500', 'price' => 380.00, 'stock' => 15, 'grind' => $espresso, 'size' => $size500],
+        ];
+
+        foreach ($variations2 as $v) {
+            $variation = ProductVariation::create([
+                'product_id' => $product2->id,
+                'sku' => $v['sku'],
+                'price' => $v['price'],
+                'stock' => $v['stock']
+            ]);
+
+            ProductVariationAttribute::create([
+                'product_variation_id' => $variation->id,
+                'variation_attribute_value_id' => $v['grind']->id
+            ]);
+
+            ProductVariationAttribute::create([
+                'product_variation_id' => $variation->id,
+                'variation_attribute_value_id' => $v['size']->id
+            ]);
+        }
     }
 }

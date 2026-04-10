@@ -23,6 +23,7 @@ export interface ProductFieldValue {
 export interface VariationAttribute {
   id: number;
   name: string;
+  values?: VariationAttributeValue[];
 }
 
 export interface VariationAttributeValue {

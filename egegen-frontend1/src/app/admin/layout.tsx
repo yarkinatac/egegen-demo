@@ -13,57 +13,47 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const pathname = usePathname();
 
   return (
-    <html lang="tr">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
-          rel="stylesheet"
-        />
-      </head>
-      <body className="bg-zinc-950 text-white font-['Inter',sans-serif] min-h-screen">
-        <div className="flex min-h-screen">
-          <aside className="w-64 bg-zinc-900 border-r border-zinc-800 flex flex-col fixed h-full">
-            <div className="p-6 border-b border-zinc-800">
-              <h1 className="text-lg font-semibold tracking-widest uppercase text-white">Yarkin</h1>
-              <p className="text-xs text-zinc-500 mt-0.5">Admin Panel</p>
-            </div>
+    <div className="bg-zinc-950 text-white min-h-screen">
+      <div className="flex min-h-screen">
+        <aside className="w-64 bg-zinc-900 border-r border-zinc-800 flex flex-col fixed h-full z-10">
+          <div className="p-6 border-b border-zinc-800">
+            <h1 className="text-lg font-semibold tracking-widest uppercase text-white">Yarkin</h1>
+            <p className="text-xs text-zinc-500 mt-0.5">Admin Panel</p>
+          </div>
 
-            <nav className="flex-1 p-4 space-y-1">
-              {navItems.map((item) => {
-                const active = pathname.startsWith(item.href);
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
-                      active
-                        ? 'bg-zinc-800 text-white'
-                        : 'text-zinc-400 hover:text-white hover:bg-zinc-800'
-                    }`}
-                  >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={item.icon} />
-                    </svg>
-                    {item.label}
-                  </Link>
-                );
-              })}
-            </nav>
+          <nav className="flex-1 p-4 space-y-1">
+            {navItems.map((item) => {
+              const active = pathname.startsWith(item.href);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
+                    active
+                      ? 'bg-zinc-800 text-white'
+                      : 'text-zinc-400 hover:text-white hover:bg-zinc-800'
+                  }`}
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={item.icon} />
+                  </svg>
+                  {item.label}
+                </Link>
+              );
+            })}
+          </nav>
 
-            <div className="p-4 border-t border-zinc-800">
-              <Link href="/" className="text-xs text-zinc-500 hover:text-zinc-300 transition">
-                ← Siteye Dön
-              </Link>
-            </div>
-          </aside>
+          <div className="p-4 border-t border-zinc-800">
+            <Link href="/" className="text-xs text-zinc-500 hover:text-zinc-300 transition">
+              ← Siteye Dön
+            </Link>
+          </div>
+        </aside>
 
-          <main className="flex-1 ml-64">
-            {children}
-          </main>
-        </div>
-      </body>
-    </html>
+        <main className="flex-1 ml-64">
+          {children}
+        </main>
+      </div>
+    </div>
   );
 }
