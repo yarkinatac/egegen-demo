@@ -2,9 +2,9 @@
 
 Laravel (backend API) + Next.js (frontend + admin panel) ile geliştirilmiş bir e-ticaret ürün yönetim sistemi.
 
-**Frontend:** https://egegen-demo.vercel.app
-**Admin Panel:** https://egegen-demo.vercel.app/admin
-**API:** https://egegen-demo.onrender.com/api/products
+*Frontend:** https://egegen-demo.vercel.app
+*Admin Panel:** https://egegen-demo.vercel.app/admin
+*API:** https://egegen-demo.onrender.com/api/products
 
 ## Kurulum
 
