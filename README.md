@@ -1,10 +1,11 @@
 # E-Ticaret Case Study
 
-Laravel (backend API) + Next.js (frontend + admin panel) ile geliştirilmiş bir e-ticaret ürün yönetim sistemi.
+Egegen Full Stack Developer pozisyonu için Laravel (backend API) + Next.js (frontend + admin panel) ile geliştirilmiş bir e-ticaret ürün yönetim sistemi.
 
 *Frontend:** https://egegen-demo.vercel.app
 *Admin Panel:** https://egegen-demo.vercel.app/admin
 *API:** https://egegen-demo.onrender.com/api/products
+Uygulamayı deploy ederken render ile apiyi deploy ettim araştırma sonuçlarıma göre vercel ile php tabanlı projeleri deploy edemiyormuşuz. Bu sebepten render kullanmak doğru geldi. Fakat admin panel ve frontend kısmı NextJs ile olduğu için vercel ile deploy edebildim.
 
 ## Kurulum
 
@@ -37,16 +38,16 @@ cp .env.example .env.local
 npm run dev          # http://localhost:3000
 ```
 
-> `.env.local` dosyasındaki `NEXT_PUBLIC_API_URL` değişkeni Laravel API adresini göstermelidir. Varsayılan olarak `http://127.0.0.1:8000/api` şeklindedir.
+> `.env.local` dosyasındaki `NEXT_PUBLIC_API_URL` değişkeni Laravel API adresini göstermelidir. Varsayılan olarak `http://127.0.0.1:8000/api` şeklinde.
 
-Backend ve frontend ayrı terminallerde çalıştırılmalıdır.
+Backend ve frontend ayrı terminallerde çalıştırılmalıdır. Önce backend daha sonra frontend çalıştırılmalı ki veriler gelsin uygulama hata vermesin.
 
 ### Admin Panel Kullanımı
 
 Admin panele `/admin` adresinden ulaşılır. Burada:
 
-- **Ürünler** — Ürün ekleme, düzenleme, silme (dinamik alan ve varyasyon desteğiyle)
-- **Dinamik Alanlar** — Farklı tiplerde (input, select, checkbox, radio) özel alan tanımlama
+- **Ürünler** — Ürün ekleme, düzenleme, silme yani CRUD işlemleri 
+- **Dinamik Alanlar** — Farklı tiplerde (input, select, checkbox, radio) üzerinde denemeler yaptım.
 - **Varyasyon Tipleri** — Varyasyon attribute tanımlama (örneğin öğütme tipi, paket boyutu)
 
 ## Yapı
@@ -61,7 +62,7 @@ egegen/                  # Laravel API
   routes/api.php         # API rotaları
   database/
     migrations/          # Tablo tanımları
-    seeders/             # Örnek veri
+    seeders/             # Manuel olarak veri eklemek için
 
 egegen-frontend1/        # Next.js (frontend + admin)
   src/
@@ -93,13 +94,13 @@ cd egegen
 php vendor/bin/phpunit --testdox
 ```
 
-20 test, 54 assertion — ürün, dinamik alan ve varyasyon tipi API'leri için CRUD testleri yazıldı.
+20 test, 54 assertion — ürün, dinamik alan ve varyasyon tipi API'leri için CRUD testlerini yazmaya çalıştım.
 
 ## Soru Yanıtları
 
 **1. Hangi rendering yöntemini tercih ettiniz ve neden?**
 
-Next.js App Router'da Server Component kullandım. Ürün detay sayfası sunucu tarafında render ediliyor, böylece arama motorları içeriği direkt görebiliyor. `generateMetadata` ile her ürün için dinamik title ve description oluşturdum. Kullanıcının etkileşime girdiği kısımlar (varyasyon seçimi, miktar) Client Component olarak ayrı tuttum. İlk yükleme hızlı, SEO sorunsuz, interaktif kısımlar da çalışıyor.
+Daha önceden hakim olduğum için Next.js App Router'da Server Component kullandım. Ürün detay sayfası sunucu tarafında render ediliyor, böylece arama motorları içeriği direkt görebiliyor. `generateMetadata` ile her ürün için dinamik title ve description oluşturdum. Kullanıcının etkileşime girdiği kısımlar (varyasyon seçimi, miktar) Client Component olarak ayrı tuttum. Böylece ilk yükleme hızlı olacak.
 
 **2. Bu veri yapısını nasıl kurguladınız?**
 
@@ -109,7 +110,7 @@ Varyasyonlarda da benzer bir yaklaşım izledim. `variation_attributes` ile tip 
 
 **3. Admin panel ve frontend arasında veri akışını nasıl yönettiniz?**
 
-Laravel sadece API olarak çalışıyor, JSON dönüyor. Next.js hem frontend sayfalarını hem de admin paneli barındırıyor. İkisi de aynı API'ye fetch ile istek atıyor. `NEXT_PUBLIC_API_URL` environment variable'ı ile API adresi ayarlanıyor. Admin panelde bir ürün oluşturulduğunda veya güncellendiğinde API üzerinden veritabanına yazılıyor, frontend'de de aynı API'den güncel veri çekilmiş oluyor.
+Laravel sadece API olarak çalışıyor, JSON dönüyor. Next.js hem frontend sayfalarını hem de admin paneli barındırıyor. İkisi de aynı API'ye fetch ile istek atıyor. `NEXT_PUBLIC_API_URL` environment variable'ı ile API adresi ayarlanıyor. Admin panelde bir ürün oluşturulduğunda veya güncellendiğinde API üzerinden veritabanına yazılıyor, frontend'de de aynı API'den güncel veri çekilmiş oluyor. Bu yapıya çok hakim olduğum için .net ağırlıklı bir bilgim olmasına rağmen laravel kısmında sadece syntax sorunu yaşadım. Fakat onu dabaşarılı bir şekilde üstesinden geldiğime inanıyorum.
 
 **4. API performansı düşük olursa nasıl bir çözüm düşünürsünüz?**
 
@@ -117,23 +118,13 @@ Laravel sadece API olarak çalışıyor, JSON dönüyor. Next.js hem frontend sa
 
 **5. Projeyi production ortamına alırken neleri değiştirirsiniz?**
 
-- SQLite yerine MySQL veya PostgreSQL kullanırım
-- `APP_DEBUG=false` yapar, hata detaylarını gizlerim
-- HTTPS zorunlu hale getiririm
-- Ürün görsellerini S3 gibi bir storage servisine taşırım
-- CORS ayarlarını sadece izin verilen domain'lere açarım
-- `npm run build` ile production build alırım
-- Queue ve job yapısı kurarak ağır işlemleri arka plana alırım
+Veritabanını kesinlikle değiştirirdim, SQLite geliştirme için pratik ama canlıda MySQL ya da PostgreSQL kullanmak lazım. APP_DEBUG=false yapardım ki kullanıcılar hata detaylarını görmesin. HTTPS kullanımı da gerekiyor. Görseller için de şu an URL olarak tutuyorum ama gerçek projede S3 veya benzeri bir yere yüklerim. Bir de CORS'u sadece kendi domain'ime açarım, şu an * bıraktım ama canlıda öyle bırakmam.
 
 **6. Güvenlik açısından hangi önlemleri alırsınız?**
 
-- Admin panel rotalarına authentication middleware eklerim (Sanctum veya Breeze ile)
-- API'de rate limiting uygularım
-- CORS'u sadece frontend domain'ine açarım (şimdilik `*` olarak bıraktım geliştirme kolaylığı için)
-- Tüm form girdilerini Laravel validation'dan geçiriyorum (zaten aktif)
-- SQL injection'a karşı Eloquent ORM kullanıyorum, raw query yok
-- XSS için React'in otomatik escaping'ine güveniyorum
+İlk önce admin panele auth koyarım, şu an herkes girebiliyor çünkü case için önceliği CRUD'a verdim. Sanctum ile token bazlı bir giriş yapardım. API tarafında rate limiting eklerim ki birisi sürekli istek atıp sistemi yormayı denemesin. CORS'u da * bırakmam canlıda, sadece kendi frontend domain'ime açarım. Bunların dışında Laravel'in validation'ını zaten her yerde kullanıyorum, form girdileri kontrol ediliyor. SQL injection konusunda Eloquent kullandığım için raw query yazmıyorum, o taraf güvenli. XSS için de React zaten her şeyi escape ediyor, o konuda ekstra bir şey yapmama gerek kalmadı.
 
 ---
 
 **Teknolojiler:** Laravel 11, Next.js 16 (App Router), Tailwind CSS, SQLite, Vercel, Render
+**Referanslar:** "https://dribbble.com/tags/coffee-shop", "Next.js & Laravel 11 Build a Modern Full-Stack Application", "https://www.youtube.com/watch?v=JNorzQLaCQc"
