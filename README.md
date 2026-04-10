@@ -5,7 +5,7 @@ Egegen Full Stack Developer pozisyonu için Laravel (backend API) + Next.js (fro
 *Frontend:** https://egegen-demo.vercel.app
 *Admin Panel:** https://egegen-demo.vercel.app/admin
 *API:** https://egegen-demo.onrender.com/api/products
-Uygulamayı deploy ederken render ile apiyi deploy ettim araştırma sonuçlarıma göre vercel ile php tabanlı projeleri deploy edemiyormuşuz. Bu sebepten render kullanmak doğru geldi. Fakat admin panel ve frontend kısmı NextJs ile olduğu için vercel ile deploy edebildim.
+Öncelikle frontend kısmında estetik ve endüstriye uygun bir tasarım seçmek istedim çünkü her ne kadar backend önemli olsa da ilk bakışta göze estetik gelmesi de önem bulunduruyor. Bu sebepten tasarımları inceledim ve beğendiğim tasarımdan esinlenerek alıntılar yaparak bir kurgu oluşturdum. Uygulamayı deploy ederken render ile apiyi deploy ettim araştırma sonuçlarıma göre vercel ile php tabanlı projeleri deploy edemiyormuşuz. Bu sebepten render kullanmak doğru geldi. Fakat admin panel ve frontend kısmı NextJs ile olduğu için vercel ile deploy edebildim.
 
 ## Kurulum
 
